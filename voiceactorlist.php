@@ -19,7 +19,7 @@
             $stmt->bind_result($idv, $name);
 
             while ($stmt->fetch()) { ?>
-                <li><a href="characterlist.php?cartoonid=<?=$idv?>"><?=$name?></a></li>    
+                <li><a href="voiceactordetails.php?voiceactorid=<?=$idv?>"><?=$name?></a></li>    
         <?php } ?>    
 
     </body>
