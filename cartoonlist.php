@@ -1,3 +1,26 @@
+<?php
+	if ($cmd = filter_input(INPUT_POST, 'cmd')) {
+		if ($cmd == 'create_cartoon') {
+			$ctitle = filter_input(INPUT_POST, 'cartoontitle')
+				or die('nope');
+
+			require_once('db_con.php');	
+			$sql = 'INSERT INTO Cartoon(title) 
+					VALUES (?)';
+			$stmt = $con->prepare($sql);
+			$stmt->	bind_param('s', $ctitle);
+			$stmt->execute();
+
+			if ($stmt->affected_rows > 0) {
+				$create_succes = true;
+			};
+
+		} else {
+			die('Unknown cmd parameter ' . $cmd);
+		}
+	}
+?>
+
 <!doctype html>
 <html>
     <head>
@@ -20,7 +43,22 @@
 
 			while ($stmt->fetch()) { ?>
 				<li><a href="cartoondetails.php?cartoonid=<?=$idc?>"><?=$title?></a></li>	
-		<?php } ?>    
+		<?php } ?> 
+		</ul>
+
+		<h1>Create cartoon</h1>
+
+    	<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+    		<input type="text" name="cartoontitle" required >
+    		<button name="cmd" value="create_cartoon" type="submit">Create</button>
+    	</form>
+
+    	</br>   
+    	<?php
+    		if ($create_succes) {
+    			echo 'Created cartoon ' . $ctitle;
+    		}
+    	?>
 
     </body>
 </html>

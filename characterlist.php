@@ -1,3 +1,58 @@
+<?php
+    $cmd = filter_input(INPUT_POST, 'cmd');
+    if ($cmd) {
+        if ($cmd == 'create_character') {
+            $chname = filter_input(INPUT_POST, 'charactername')
+                or die('nope');
+            $voiceactorid = filter_input(INPUT_POST, 'voiceactorid')
+                or die('nope');
+            $cartoonid = filter_input(INPUT_POST, 'cartoonid')
+                or die('nope');
+
+            require_once('db_con.php');
+            $con->autocommit(FALSE);
+            $con->begin_transaction();
+
+            $sql = 'INSERT INTO CartoonCharacters.Character(name)
+                    VALUES (?)';
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('s', $chname);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+            $characterid = $con->insert_id;
+
+            $sql = 'INSERT INTO Character_VoiceActor(VoiceActor_idVoiceActor, Character_idCharacters) 
+                    VALUES (?, ?)';
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('ii', $voiceactorid, $characterid);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+
+            $sql = 'INSERT INTO Character_Cartoon(Cartoon_idCartoon, Character_idCharacters) 
+                    VALUES (?, ?)';
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('ii', $cartoonid, $characterid);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+
+            $con->commit();
+            $create_succes = true;
+
+        } else {
+            die('Unknown cmd parameter ' . $cmd);
+        }
+    }
+?>
+
 <!doctype html>
 <html>
     <head>
@@ -20,7 +75,50 @@
 
 			while ($stmt->fetch()) { ?>
 				<li><a href="characterdetails.php?characterid=<?=$idch?>"><?=$name?></a></li>	
-		<?php } ?>    
+		<?php } ?>  
+        </ul>
+
+        <h1>Create Character</h1>
+
+        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+            <input type="text" name="charactername" required >
+            <select name="cartoonid">
+                <option value="none">Choose cartoon</option> 
+            <?php
+                $sql = 'SELECT idCartoon, Title 
+                        FROM Cartoon
+                        ORDER BY Title ASC';
+                $stmt = $con->prepare($sql);
+                $stmt->execute();
+                $stmt->bind_result($idc, $ctitle);
+                
+                 while ($stmt->fetch()) { ?>
+                    <option value="<?=$idc?>"><?=$ctitle?></option> 
+            <?php } ?>  
+            </select>
+            <select name="voiceactorid">
+                <option value="none">Choose voice actor</option> 
+            <?php
+                $sql = 'SELECT idVoiceActor, Name 
+                        FROM VoiceActor
+                        ORDER BY Name ASC';
+                $stmt = $con->prepare($sql);
+                $stmt->execute();
+                $stmt->bind_result($idv, $vname);
+                
+                 while ($stmt->fetch()) { ?>
+                    <option value="<?=$idv?>"><?=$vname?></option> 
+            <?php } ?>  
+            </select>       
+            <button name="cmd" value="create_character" type="submit">Create</button>
+        </form>
+
+        </br>   
+        <?php
+            if ($create_succes) {
+                echo 'Created cartoon ' . $ctitle;
+            }
+        ?>  
 
     </body>
 </html>
