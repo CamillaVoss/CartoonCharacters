@@ -47,6 +47,47 @@
             $con->commit();
             $create_succes = true;
 
+        } elseif ($cmd == 'delete_character') {
+            $chid = filter_input(INPUT_POST, 'characterid', FILTER_VALIDATE_INT)
+                or die('nope');
+
+            require_once('db_con.php');
+            $con->autocommit(FALSE);
+            $con->begin_transaction();
+
+            $sql = 'DELETE FROM Character_VoiceActor 
+                    WHERE Character_idCharacters=?';
+            $stmt = $con->prepare($sql);
+            $stmt-> bind_param('i', $chid);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+
+            $sql = 'DELETE FROM Character_Cartoon 
+                    WHERE Character_idCharacters=?';
+            $stmt = $con->prepare($sql);
+            $stmt-> bind_param('i', $chid);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+
+            $sql = 'DELETE FROM CartoonCharacters.Character
+                    WHERE idCharacters=?';
+            $stmt = $con->prepare($sql);
+            $stmt-> bind_param('i', $chid);
+
+            if (!$stmt->execute()) {
+                $con->rollback();
+                die($con->error);
+            };
+
+            $con->commit();
+            echo "Deleted Character";
+
         } else {
             die('Unknown cmd parameter ' . $cmd);
         }
@@ -74,7 +115,13 @@
 			$stmt->bind_result($idch, $name);
 
 			while ($stmt->fetch()) { ?>
-				<li><a href="characterdetails.php?characterid=<?=$idch?>"><?=$name?></a></li>	
+                <li>
+                    <a href="characterdetails.php?characterid=<?=$idch?>"><?=$name?></a>
+                    <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+                        <input type="hidden" name="characterid" value="<?=$idch?>">
+                        <button type="submit" name="cmd" value="delete_character">Delete</button>
+                    </form>
+                </li> 
 		<?php } ?>  
         </ul>
 
