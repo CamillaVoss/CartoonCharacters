@@ -15,6 +15,22 @@
                 $create_succes = true;
             };
 
+        } elseif ($cmd == 'delete_voiceactor') {
+            $vid = filter_input(INPUT_POST, 'voiceactorid', FILTER_VALIDATE_INT)
+                or die('nope');
+
+            require_once('db_con.php'); 
+            $sql = 'DELETE FROM VoiceActor WHERE idVoiceActor=?';
+            $stmt = $con->prepare($sql);
+            $stmt-> bind_param('i', $vid);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                echo "Deleted Voice Actor";
+            } else {
+                echo "Can't delete Voice Actor. You must delete all characters from Voice Actor first";
+             };     
+
         } else {
             die('Unknown cmd parameter ' . $cmd);
         }
@@ -42,7 +58,13 @@
             $stmt->bind_result($idv, $name);
 
             while ($stmt->fetch()) { ?>
-                <li><a href="voiceactordetails.php?voiceactorid=<?=$idv?>"><?=$name?></a></li>    
+            <li>
+                <a href="voiceactordetails.php?voiceactorid=<?=$idv?>"><?=$name?></a>
+                <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+                    <input type="hidden" name="voiceactorid" value="<?=$idv?>">
+                    <button type="submit" name="cmd" value="delete_voiceactor">Delete</button>
+                </form>
+            </li> 
         <?php } ?> 
 
         </ul>

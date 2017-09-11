@@ -15,6 +15,22 @@
 				$create_succes = true;
 			};
 
+		} elseif ($cmd == 'delete_cartoon') {
+			$cid = filter_input(INPUT_POST, 'cartoonid', FILTER_VALIDATE_INT)
+				or die('nope');
+
+			require_once('db_con.php');	
+			$sql = 'DELETE FROM Cartoon WHERE idCartoon=?';
+			$stmt = $con->prepare($sql);
+			$stmt->	bind_param('i', $cid);
+			$stmt->execute();
+
+			if ($stmt->affected_rows > 0) {
+				echo "Deleted cartoon";
+			} else {
+				echo "Can't delete cartoon. You must delete all characters from cartoon first";
+			 };		
+
 		} else {
 			die('Unknown cmd parameter ' . $cmd);
 		}
@@ -42,7 +58,13 @@
 			$stmt->bind_result($idc, $title);
 
 			while ($stmt->fetch()) { ?>
-				<li><a href="cartoondetails.php?cartoonid=<?=$idc?>"><?=$title?></a></li>	
+				<li style="margin: 0;">
+				<a href="cartoondetails.php?cartoonid=<?=$idc?>"><?=$title?></a>
+				<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+					<input type="hidden" name="cartoonid" value="<?=$idc?>">
+					<button type="submit" name="cmd" value="delete_cartoon">Delete</button>
+				</form>
+				</li>	
 		<?php } ?> 
 		</ul>
 
@@ -56,8 +78,8 @@
     	</br>   
     	<?php
     		if ($create_succes) {
-    			echo 'Created cartoon ' . $ctitle;
-    		}
+    			echo 'Created cartoon <strong>' . $ctitle . '</strong>';
+    		};
     	?>
 
     </body>
