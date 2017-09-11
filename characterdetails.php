@@ -25,10 +25,10 @@
                 <h2><?=$name?></h2>
                 <h4><strong>Age:</strong> <?=$age?></h4>
                 <p><?=$description?></p>
-
-
           <?php  } ?>
 
         </ul>
+
+        <hr>
     </body>
 </html>

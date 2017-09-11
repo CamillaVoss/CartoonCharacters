@@ -31,5 +31,7 @@
           <?php  } ?>
 
         </ul>
+
+        <hr>
     </body>
 </html>
