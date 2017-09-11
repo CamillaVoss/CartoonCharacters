@@ -58,15 +58,17 @@
 			$stmt->bind_result($idc, $title);
 
 			while ($stmt->fetch()) { ?>
-				<li style="margin: 0;">
-				<a href="cartoondetails.php?cartoonid=<?=$idc?>"><?=$title?></a>
-				<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
-					<input type="hidden" name="cartoonid" value="<?=$idc?>">
-					<button type="submit" name="cmd" value="delete_cartoon">Delete</button>
-				</form>
+				<li>
+					<a href="cartoondetails.php?cartoonid=<?=$idc?>"><?=$title?></a>
+					<form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+						<input type="hidden" name="cartoonid" value="<?=$idc?>">
+						<button type="submit" name="cmd" value="delete_cartoon">Delete</button>
+					</form>
 				</li>	
 		<?php } ?> 
 		</ul>
+
+		<hr>
 
 		<h1>Create cartoon</h1>
 
