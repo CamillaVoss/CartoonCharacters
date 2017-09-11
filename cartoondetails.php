@@ -1,4 +1,33 @@
 <?php
+    if($cmd = filter_input(INPUT_POST, 'cmd')){
+         if($cmd == 'rename_cartoon'){
+            $cid = filter_input(INPUT_POST, 'cartoonid', FILTER_VALIDATE_INT)
+                or die('Missing/illegal cartoon parameter');
+            $ctitle = filter_input(INPUT_POST, 'cartoontitle')
+                or die('Missing/illegal cartoon parameter');
+            
+            require_once('db_con.php');
+            $sql = 'UPDATE cartoon 
+                    SET Title = ? 
+                    WHERE idCartoon = ?';
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param('si', $ctitle, $cid);
+            $stmt->execute();
+
+            if($stmt->affected_rows >0){
+                echo 'Cartoon title updated to '.$ctitle;
+            }
+            else {
+                echo 'Could not change title of cartoon '.$cid;
+            }
+
+        }
+        else {
+            die('Unknow cmd parameter: '.$cmd);
+        }
+
+    }
+
     $cid = filter_input(INPUT_GET, 'cartoonid', FILTER_VALIDATE_INT)
                     or die('could not get cartoon id for list');
             require_once('db_con.php');    
@@ -10,36 +39,7 @@
             $stmt = $con->prepare($sql);
             $stmt->bind_param('i', $cid);
             $stmt->execute();
-            $stmt->bind_result($chid, $chname);
-
-    if($cmd = filter_input(INPUT_POST, 'cmd')){
-    
-        if($cmd == 'rename_cartoon'){
-            $cid = filter_input(INPUT_POST, 'cartoonid', FILTER_VALIDATE_INT)
-                or die('Missing/illegal cartoon parameter');
-            $ctitle = filter_input(INPUT_POST, 'cartoontitle')
-                or die('Missing/illegal cartoon parameter');
-            
-            require_once('db_con.php');
-            $sql = 'UPDATE cartoon SET title = ? WHERE idCartoon=?';
-            $stmt = $con->prepare($sql);
-            $stmt->bind_param('si', $ctitle, $cid);
-            $stmt->execute();
-            
-            if($stmt->affected_rows >0){
-                echo 'Cartoon title updated to '.$ctitle;
-            }
-            else {
-                echo 'Could not change title of cartoon '.$cid;
-            }
-
-            $param = $_SERVER['QUERY_STRING'];
-
-        }
-        else {
-            die('Unknow cmd parameter: '.$cmd);
-        }
-    }         
+            $stmt->bind_result($chid, $chname);         
 ?>
 
 <!doctype html>
