@@ -54,7 +54,7 @@
     <body>
         <?php
             while ($stmt->fetch()) { ?>
-                <img src="img/<?=$image?>" alt="Profile Picture">
+                <img src="uploads/<?=$image?>" alt="Profile Picture">
                 <h2><?=$name?></h2>
                 <h4><strong>Age:</strong> <?=$age?></h4>
                 <p><?=$description?></p>
@@ -85,5 +85,15 @@
             <input type="text" name="characterdescription" value="<?=$chdescription?>" placeholder="Characterdescription" required >
             <button name="cmd" value="rename_character" type="submit">Edit</button>
         </form>
+
+        <hr>
+        <h1>Upload image</h1>
+
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+            Select image to upload:
+            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="submit" value="Upload Image" name="submit">
+        </form>
+
     </body>
 </html>
