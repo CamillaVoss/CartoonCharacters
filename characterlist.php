@@ -125,8 +125,6 @@
 		<?php } ?>  
         </ul>
 
-        <hr>
-
         <h1>Create Character</h1>
 
         <form action="<?=$_SERVER['PHP_SELF']?>" method="post">

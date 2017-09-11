@@ -69,8 +69,6 @@
 
         </ul>
 
-        <hr>
-
         <h1>Create Voice Actor</h1>
 
         <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
