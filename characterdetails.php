@@ -12,7 +12,7 @@ if(isset($_POST["submit"])) {
         echo "File is not an image.";
         $uploadOk = 0;
     }
-    
+
     // Check if file already exists
     if (file_exists($target_file)) {
         echo "Sorry, file already exists.";
@@ -34,13 +34,26 @@ if(isset($_POST["submit"])) {
 
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
+        echo "Sorry, your file was not uploaded." . '</br>';
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+
+                $chid = filter_input(INPUT_POST, 'characterid', FILTER_VALIDATE_INT)
+                            or die('Missing/illegal image1 parameter');
+                $chimage = basename($_FILES["fileToUpload"]["name"]);          
+
+                require_once('db_con.php');
+                $sql = 'UPDATE CartoonCharacters.Character
+                        SET Image = ?
+                        WHERE idCharacters = ?';
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param('si', $chimage, $chid);
+                $stmt->execute();
+
+            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded." . "</br>";
         } else {
-            echo "Sorry, there was an error uploading your file.";
+            echo "Sorry, there was an error uploading your file." . '</br>';
         }
     }
 
@@ -143,6 +156,7 @@ if(isset($_POST["submit"])) {
 
         <form action="characterdetails.php?<?=$_SERVER['QUERY_STRING']?>" method="post" enctype="multipart/form-data">
             Select image to upload:
+            <input type="hidden" name="characterid" value="<?=$chid?>">
             <input type="file" name="fileToUpload" id="fileToUpload">
             <input type="submit" value="Upload Image" name="submit">
         </form>
