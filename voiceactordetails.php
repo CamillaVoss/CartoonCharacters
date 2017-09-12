@@ -80,7 +80,7 @@
             while ($stmt->fetch()) {}
         ?>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="voiceactordetails.php?<?=$_SERVER['QUERY_STRING']?>" method="post">
             <input type="hidden" name="voiceactorid" value="<?=$vid?>">
             <input type="text" name="voiceactorname" value="<?=$vname?>" placeholder="VoiceActorName" required >
             <button name="cmd" value="rename_voiceactor" type="submit">Edit</button>

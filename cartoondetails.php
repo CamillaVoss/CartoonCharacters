@@ -79,9 +79,11 @@
             $stmt->bind_result($ctitle);
 
             while ($stmt->fetch()) {}
+
+             
         ?>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="cartoondetails.php?<?=$_SERVER['QUERY_STRING']?>" method="post">
             <input type="hidden" name="cartoonid" value="<?=$cid?>">
             <input type="text" name="cartoontitle" value="<?=$ctitle?>" placeholder="Cartoontitle" required >
             <button name="cmd" value="rename_cartoon" type="submit">Edit</button>

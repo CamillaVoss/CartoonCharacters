@@ -19,10 +19,10 @@
             $stmt->execute();
 
             if($stmt->affected_rows >0){
-                echo 'Character updated';
+                echo 'Character updated' . '</br>';
             }
             else {
-                echo 'Could not change character';
+                echo 'No information was updated';
             }
 
         }
@@ -51,7 +51,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Details</title>
     </head>
-    <body>
+    <body style="margin: 50px auto; text-align: center;">
         <?php
             while ($stmt->fetch()) { ?>
                 <img src="uploads/<?=$image?>" alt="Profile Picture">
@@ -78,7 +78,7 @@
             while ($stmt->fetch()) {}
         ?>
 
-        <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+        <form action="characterdetails.php?<?=$_SERVER['QUERY_STRING']?>" method="post">
             <input type="hidden" name="characterid" value="<?=$chid?>">
             <input type="text" name="charactername" value="<?=$chname?>" placeholder="Charactername" required >
             <input type="text" name="characterage" value="<?=$chage?>" placeholder="Characterage" required >
