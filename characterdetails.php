@@ -119,7 +119,10 @@ if(isset($_POST["submit"])) {
     <body style="margin: 50px auto; text-align: center;">
         <?php
             while ($stmt->fetch()) { ?>
-                <img src="uploads/<?=$image?>" alt="Profile Picture">
+                <?php 
+                if (!empty($image)) { ?>
+                    <img src="uploads/<?=$image?>" alt="Profile Picture">
+                <?php } ?>  
                 <h2><?=$name?></h2>
                 <h4><strong>Age:</strong> <?=$age?></h4>
                 <p><?=$description?></p>
