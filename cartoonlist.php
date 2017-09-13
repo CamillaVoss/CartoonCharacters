@@ -1,5 +1,7 @@
 <?php
+	// checks whether he button 'cmd' is clicked
 	if ($cmd = filter_input(INPUT_POST, 'cmd')) {
+		// creates cartoon
 		if ($cmd == 'create_cartoon') {
 			$ctitle = filter_input(INPUT_POST, 'cartoontitle')
 				or die('nope');
@@ -14,7 +16,7 @@
 			if ($stmt->affected_rows > 0) {
 				$create_succes = true;
 			};
-
+		// deletes cartoon
 		} elseif ($cmd == 'delete_cartoon') {
 			$cid = filter_input(INPUT_POST, 'cartoonid', FILTER_VALIDATE_INT)
 				or die('nope');
@@ -30,7 +32,7 @@
 			} else {
 				echo "Can't delete cartoon. You must delete all characters from cartoon first";
 			 };		
-
+		// last resort, if parameter is unkown
 		} else {
 			die('Unknown cmd parameter ' . $cmd);
 		}
@@ -49,6 +51,7 @@
     	<ul>
     	  
     	<?php
+    		// selects all cartoons from the table, and displays them with a link for details, and a button to delete the cartoon
 			require_once('db_con.php');	
 			$sql = 'SELECT idCartoon, Title 
 					FROM Cartoon

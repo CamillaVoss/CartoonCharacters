@@ -1,4 +1,5 @@
 <?php
+// Upload image functionality from W3 school
 $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
@@ -39,6 +40,7 @@ if(isset($_POST["submit"])) {
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 
+                // if upload is a succes, the filename is stored in the db
                 $chid = filter_input(INPUT_POST, 'characterid', FILTER_VALIDATE_INT)
                             or die('Missing/illegal image1 parameter');
                 $chimage = basename($_FILES["fileToUpload"]["name"]);          
@@ -64,8 +66,10 @@ if(isset($_POST["submit"])) {
 ?>
 
 <?php
+    // Checks whether button 'cmd' is clicked
     if($cmd = filter_input(INPUT_POST, 'cmd')){
-         if($cmd == 'rename_character'){
+        // updates character information
+        if($cmd == 'rename_character'){
             $chid = filter_input(INPUT_POST, 'characterid', FILTER_VALIDATE_INT)
                 or die('Missing/illegal character parameter');
             $chname = filter_input(INPUT_POST, 'charactername')
@@ -96,7 +100,7 @@ if(isset($_POST["submit"])) {
         }
 
     }
-
+    // Retreives information about given character
     $chid = filter_input(INPUT_GET, 'characterid', FILTER_VALIDATE_INT)
                     or die('nope');
             require_once('db_con.php');    
@@ -118,6 +122,7 @@ if(isset($_POST["submit"])) {
     </head>
     <body style="margin: 50px auto; text-align: center;">
         <?php
+            // Displays character details
             while ($stmt->fetch()) { ?>
                 <?php 
                 if (!empty($image)) { ?>
@@ -136,6 +141,7 @@ if(isset($_POST["submit"])) {
                 or die('Could not get cartoon id');   
             }
 
+            // Revtreives data for edit form
             require_once('db_con.php'); 
             $sql = 'SELECT Name, Age, Description FROM mul_b.Character WHERE idCharacters = ?';
             $stmt = $con->prepare($sql);

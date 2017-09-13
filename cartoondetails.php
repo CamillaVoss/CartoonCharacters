@@ -1,5 +1,7 @@
 <?php
+    // Checks whether button 'cmd' is clicked
     if($cmd = filter_input(INPUT_POST, 'cmd')){
+        // renames cartoon
          if($cmd == 'rename_cartoon'){
             $cid = filter_input(INPUT_POST, 'cartoonid', FILTER_VALIDATE_INT)
                 or die('Missing/illegal cartoon parameter');
@@ -27,7 +29,7 @@
         }
 
     }
-
+    // selects all characters whom appears in the cartoon, and displays them as a list if links
     $cid = filter_input(INPUT_GET, 'cartoonid', FILTER_VALIDATE_INT)
                     or die('could not get cartoon id for list');
             require_once('db_con.php');    
@@ -66,6 +68,7 @@
         <h1>Edit cartoon</h1>
 
         <?php
+            // selects title from given cartoon, to use on the form as value
             if(empty($cid)){
             $cid = filter_input(INPUT_GET, 'cartoonid', FILTER_VALIDATE_INT)
                 or die('Could not get cartoon id');   

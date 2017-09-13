@@ -1,5 +1,7 @@
 <?php
+    // Checks whether button is clicked
     if ($cmd = filter_input(INPUT_POST, 'cmd')) {
+        // Creates voice actor
         if ($cmd == 'create_voiceactor') {
             $vname = filter_input(INPUT_POST, 'voiceactorname')
                 or die('nope');
@@ -15,6 +17,7 @@
                 $create_succes = true;
             };
 
+        // Deletes voice actor
         } elseif ($cmd == 'delete_voiceactor') {
             $vid = filter_input(INPUT_POST, 'voiceactorid', FILTER_VALIDATE_INT)
                 or die('nope');
@@ -49,6 +52,7 @@
         <ul>
           
         <?php
+            // Display list of voice actors
             require_once('db_con.php'); 
             $sql = 'SELECT idVoiceActor, Name 
                     FROM VoiceActor

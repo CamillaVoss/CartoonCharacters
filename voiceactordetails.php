@@ -1,6 +1,8 @@
 <?php
+    // Checks whether button is pressed
     if($cmd = filter_input(INPUT_POST, 'cmd')){
-         if($cmd == 'rename_voiceactor'){
+        // Updates voice actor
+        if($cmd == 'rename_voiceactor'){
             $vid = filter_input(INPUT_POST, 'voiceactorid', FILTER_VALIDATE_INT)
                 or die('Missing/illegal voiceactor parameter');
             $vname = filter_input(INPUT_POST, 'voiceactorname')
@@ -28,6 +30,7 @@
 
     }
 
+    // Displays list of characters voiced by given actor
     $vid = filter_input(INPUT_GET, 'voiceactorid', FILTER_VALIDATE_INT)
                     or die('nope');
             require_once('db_con.php');    
@@ -65,6 +68,7 @@
         <h1>Edit voice actor</h1>
 
         <?php
+            // Retreives information for form
             if(empty($vid)){
             $vid = filter_input(INPUT_GET, 'voiceactorid', FILTER_VALIDATE_INT)
                 or die('Could not get voiceactorid');   

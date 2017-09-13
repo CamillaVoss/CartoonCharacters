@@ -1,7 +1,10 @@
 <?php
+    // Checks whether button 'cmd' is clicked
     $cmd = filter_input(INPUT_POST, 'cmd');
     if ($cmd) {
+        // creates character
         if ($cmd == 'create_character') {
+            // retreives values from form
             $chname = filter_input(INPUT_POST, 'charactername')
                 or die('nope');
             $voiceactorid = filter_input(INPUT_POST, 'voiceactorid')
@@ -13,6 +16,7 @@
             $con->autocommit(FALSE);
             $con->begin_transaction();
 
+            // creates character
             $sql = 'INSERT INTO mul_b.Character(name)
                     VALUES (?)';
             $stmt = $con->prepare($sql);
@@ -24,6 +28,7 @@
             };
             $characterid = $con->insert_id;
 
+            // creates coalition between character and voice actor
             $sql = 'INSERT INTO Character_VoiceActor(VoiceActor_idVoiceActor, Character_idCharacters) 
                     VALUES (?, ?)';
             $stmt = $con->prepare($sql);
@@ -34,6 +39,7 @@
                 die($con->error);
             };
 
+            // creates coalition between character and cartoon
             $sql = 'INSERT INTO Character_Cartoon(Cartoon_idCartoon, Character_idCharacters) 
                     VALUES (?, ?)';
             $stmt = $con->prepare($sql);
@@ -47,6 +53,7 @@
             $con->commit();
             $create_succes = true;
 
+        // deletes character    
         } elseif ($cmd == 'delete_character') {
             $chid = filter_input(INPUT_POST, 'characterid', FILTER_VALIDATE_INT)
                 or die('nope');
@@ -55,6 +62,7 @@
             $con->autocommit(FALSE);
             $con->begin_transaction();
 
+            // deletes stored row in table
             $sql = 'DELETE FROM Character_VoiceActor 
                     WHERE Character_idCharacters=?';
             $stmt = $con->prepare($sql);
@@ -65,6 +73,7 @@
                 die($con->error);
             };
 
+            // deletes stored row in table
             $sql = 'DELETE FROM Character_Cartoon 
                     WHERE Character_idCharacters=?';
             $stmt = $con->prepare($sql);
@@ -75,6 +84,7 @@
                 die($con->error);
             };
 
+            // finally deletes character
             $sql = 'DELETE FROM mul_b.Character
                     WHERE idCharacters=?';
             $stmt = $con->prepare($sql);
@@ -88,6 +98,7 @@
             $con->commit();
             echo "Deleted Character";
 
+        // If wrong parameter is given
         } else {
             die('Unknown cmd parameter ' . $cmd);
         }
@@ -106,6 +117,7 @@
     	<ul>
     	  
     	<?php
+            // Creates list of characters
 			require_once('db_con.php');	
 			$sql = 'SELECT idCharacters, Name 
                     FROM mul_b.Character
@@ -134,6 +146,7 @@
             <select name="cartoonid">
                 <option value="none">Choose cartoon</option> 
             <?php
+                // Creates dropdown menu of cartoons
                 $sql = 'SELECT idCartoon, Title 
                         FROM Cartoon
                         ORDER BY Title ASC';
@@ -148,6 +161,7 @@
             <select name="voiceactorid">
                 <option value="none">Choose voice actor</option> 
             <?php
+                // Creates dropdown menu of voice actors
                 $sql = 'SELECT idVoiceActor, Name 
                         FROM VoiceActor
                         ORDER BY Name ASC';
