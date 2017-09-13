@@ -59,7 +59,7 @@
         <ul>
         <?php
             while ($stmt->fetch()) { ?>
-                <li><a href="characterlist.php?cartoonid=<?=$chid?>"><?=$chname?></a></li>
+                <li><a href="characterdetails.php?characterid=<?=$chid?>"><?=$chname?></a></li>
           <?php  } ?>
 
         </ul>
