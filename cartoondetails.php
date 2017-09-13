@@ -7,7 +7,7 @@
                 or die('Missing/illegal cartoon parameter');
             
             require_once('db_con.php');
-            $sql = 'UPDATE cartoon 
+            $sql = 'UPDATE Cartoon 
                     SET Title = ? 
                     WHERE idCartoon = ?';
             $stmt = $con->prepare($sql);
@@ -31,8 +31,8 @@
     $cid = filter_input(INPUT_GET, 'cartoonid', FILTER_VALIDATE_INT)
                     or die('could not get cartoon id for list');
             require_once('db_con.php');    
-            $sql = 'SELECT cc.Character_idCharacters, ch.name
-                    FROM Cartoon c, Character_Cartoon cc, CartoonCharacters.Character ch
+            $sql = 'SELECT cc.Character_idCharacters, ch.Name
+                    FROM Cartoon c, Character_Cartoon cc, mul_b.Character ch
                     WHERE ch.idCharacters = cc.Character_idCharacters
                     AND c.idCartoon = cc.Cartoon_idCartoon
                     AND c.idCartoon = ?';
@@ -56,7 +56,7 @@
         <ul>
         <?php
             while ($stmt->fetch()) { ?>
-                <li><a href="characterlist.php?cartoonid=<?=$chid?>"><?=$chname?></a></li>
+                <li><a href="characterdetails.php?characterid=<?=$chid?>"><?=$chname?></a></li>
           <?php  } ?>
 
         </ul>
@@ -72,7 +72,7 @@
             }
 
             require_once('db_con.php'); 
-            $sql = 'SELECT title FROM cartoon WHERE idCartoon = ?';
+            $sql = 'SELECT Title FROM Cartoon WHERE idCartoon = ?';
             $stmt = $con->prepare($sql);
             $stmt->bind_param('i', $cid);
             $stmt->execute();

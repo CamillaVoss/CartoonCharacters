@@ -15,10 +15,10 @@
             $stmt->execute();
 
             if($stmt->affected_rows >0){
-                echo 'Cartoon title updated to '.$vname;
+                echo 'Name updated to '.$vname;
             }
             else {
-                echo 'Could not change title of cartoon '.$vid;
+                echo 'Could not change name of '.$vname;
             }
 
         }
@@ -31,8 +31,8 @@
     $vid = filter_input(INPUT_GET, 'voiceactorid', FILTER_VALIDATE_INT)
                     or die('nope');
             require_once('db_con.php');    
-            $sql = 'SELECT cv.Character_idCharacters, ch.name
-                    FROM VoiceActor v, Character_VoiceActor cv, CartoonCharacters.Character ch
+            $sql = 'SELECT cv.Character_idCharacters, ch.Name
+                    FROM VoiceActor v, Character_VoiceActor cv, mul_b.Character ch
                     WHERE ch.idCharacters = cv.Character_idCharacters
                     AND v.idVoiceActor = cv.VoiceActor_idVoiceActor
                     AND v.idVoiceActor = ?';
@@ -71,7 +71,7 @@
             }
 
             require_once('db_con.php'); 
-            $sql = 'SELECT name FROM VoiceActor WHERE idVoiceActor = ?';
+            $sql = 'SELECT Name FROM VoiceActor WHERE idVoiceActor = ?';
             $stmt = $con->prepare($sql);
             $stmt->bind_param('i', $vid);
             $stmt->execute();

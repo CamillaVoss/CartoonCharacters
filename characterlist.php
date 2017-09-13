@@ -13,7 +13,7 @@
             $con->autocommit(FALSE);
             $con->begin_transaction();
 
-            $sql = 'INSERT INTO CartoonCharacters.Character(name)
+            $sql = 'INSERT INTO mul_b.Character(name)
                     VALUES (?)';
             $stmt = $con->prepare($sql);
             $stmt->bind_param('s', $chname);
@@ -75,7 +75,7 @@
                 die($con->error);
             };
 
-            $sql = 'DELETE FROM CartoonCharacters.Character
+            $sql = 'DELETE FROM mul_b.Character
                     WHERE idCharacters=?';
             $stmt = $con->prepare($sql);
             $stmt-> bind_param('i', $chid);
@@ -108,7 +108,7 @@
     	<?php
 			require_once('db_con.php');	
 			$sql = 'SELECT idCharacters, Name 
-                    FROM CartoonCharacters.Character
+                    FROM mul_b.Character
                     ORDER BY Name ASC';
 			$stmt = $con->prepare($sql);
 			$stmt->execute();

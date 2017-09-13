@@ -44,7 +44,7 @@ if(isset($_POST["submit"])) {
                 $chimage = basename($_FILES["fileToUpload"]["name"]);          
 
                 require_once('db_con.php');
-                $sql = 'UPDATE CartoonCharacters.Character
+                $sql = 'UPDATE mul_b.Character
                         SET Image = ?
                         WHERE idCharacters = ?';
                 $stmt = $con->prepare($sql);
@@ -76,7 +76,7 @@ if(isset($_POST["submit"])) {
                 or die('Missing/illegal character parameter');        
             
             require_once('db_con.php');
-            $sql = 'UPDATE CartoonCharacters.Character
+            $sql = 'UPDATE mul_b.Character
                     SET Name = ?, Age = ?, Description = ?
                     WHERE idCharacters = ?';
             $stmt = $con->prepare($sql);
@@ -101,7 +101,7 @@ if(isset($_POST["submit"])) {
                     or die('nope');
             require_once('db_con.php');    
             $sql = 'SELECT Name, Image, Age, Description
-                    FROM CartoonCharacters.Character
+                    FROM mul_b.Character
                     WHERE idCharacters = ?';
             $stmt = $con->prepare($sql);
             $stmt->bind_param('i', $chid);
@@ -137,7 +137,7 @@ if(isset($_POST["submit"])) {
             }
 
             require_once('db_con.php'); 
-            $sql = 'SELECT name, age, description FROM CartoonCharacters.character WHERE idCharacters = ?';
+            $sql = 'SELECT Name, Age, Description FROM mul_b.Character WHERE idCharacters = ?';
             $stmt = $con->prepare($sql);
             $stmt->bind_param('i', $chid);
             $stmt->execute();
@@ -150,7 +150,7 @@ if(isset($_POST["submit"])) {
             <input type="hidden" name="characterid" value="<?=$chid?>">
             <input type="text" name="charactername" value="<?=$chname?>" placeholder="Charactername" required >
             <input type="text" name="characterage" value="<?=$chage?>" placeholder="Characterage" required >
-            <input type="text" name="characterdescription" value="<?=$chdescription?>" placeholder="Characterdescription" required >
+            <input type="text" name="characterdescription" value="<?=$chdescription?>" placeholder="Characterdescription">
             <button name="cmd" value="rename_character" type="submit">Edit</button>
         </form>
 
