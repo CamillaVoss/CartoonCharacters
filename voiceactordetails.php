@@ -51,9 +51,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Details</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-
+        <?php include_once('nav.php') ?>
         <h3>Actor voices these characters</h3>
 
         <ul>

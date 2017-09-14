@@ -119,7 +119,9 @@ if(isset($_POST["submit"])) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Details</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
+    <?php include_once('nav.php') ?>
     <body style="margin: 50px auto; text-align: center;">
         <?php
             // Displays character details
